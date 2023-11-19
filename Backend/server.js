@@ -1,47 +1,38 @@
 const express = require('express');
 const multer = require('multer');
+const cors = require('cors');
 const dotenv = require('dotenv');
-const cors = require('cors'); // Require CORS
-const fs = require('fs-extra');
-require('dotenv').config({ path: './backend/credentials.env' });
+var MongoClient = require('mongodb').MongoClient;
 
-
-
-// Importing mock helper functions
-const analyzeImageWithGoogleVision = require('./googleVisionHelper');
-const uploadToS3 = require('./s3Helper');
-const saveMetadataToMongoDB = require('./mongoDBHelper');
-
-dotenv.config();
-const upload = multer({ dest: 'uploads/' });
+dotenv.config({ path: './backend/credentials.env' });
 const app = express();
+app.use(express.json());
 app.use(cors());
+const upload = multer({ dest: 'uploads/' });
 const port = 3001;
 
-// Endpoint to handle file uploads
-app.post('/upload', upload.single('file'), async (req, res) => {
+var uri = "mongodb://harrisonmacey:<password>@ac-exkq8sr-shard-00-00.qykp6gp.mongodb.net:27017,ac-exkq8sr-shard-00-01.qykp6gp.mongodb.net:27017,ac-exkq8sr-shard-00-02.qykp6gp.mongodb.net:27017/?ssl=true&replicaSet=atlas-13x7sp-shard-0&authSource=admin&retryWrites=true&w=majority";
+MongoClient.connect(uri, function(err, client) {
+//   const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  console.log("working");
+//   client.close();
+});
+
+
+
+// Endpoint to receive and save metadata
+app.post('/upload-metadata', async (req, res) => {
     try {
-        // const file = req.file;
-        // if (!file) {
-        //     return res.status(400).send('No file uploaded.');
-        // }
+        const { tag, link, uniqueId } = req.body;
+        // const collection = client.db("cluster0").collection("cluster0"); // Replace with your DB and collection name
+        console.log("workgin2");
+        await collection.insertOne({ tag, link, uniqueId });
 
-        // // Read the file and convert it to base64
-        // const fileBuffer = await fs.readFile(file.path);
-        // const imageData = fileBuffer.toString('base64');
-
-        // // Call the Google Vision API
-        // const visionResult = await analyzeImageWithGoogleVision(imageData);
-        // // ... Call other helper functions as before ...
-
-        // res.json({ 
-        //     success: true, 
-        //     visionResult, 
-        //     // ... Other response data ...
-        // });
+        res.status(200).json({ message: 'Metadata saved successfully' });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Error processing file');
+        console.error('Error saving metadata:', error);
+        res.status(500).send('Error saving metadata');
     }
 });
 

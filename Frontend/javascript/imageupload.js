@@ -1,8 +1,9 @@
 // Get references to the file input and the image element
 const fileInput = document.getElementById('fileInput');
 const uploadedImage = document.getElementById('uploadedImage');
-let tags = [];
+let tags = "";
 let link = "";
+let uniqueId = "ID " + Date.now();
 
 
 // Helper Function to Call Google Vision API
@@ -33,7 +34,8 @@ function analyzeImageWithGoogleVision(imageData) {
       // console.log('Google Vision API Response:', data);
       // Process the response data as needed
     let labels = data.responses[0].labelAnnotations;
-    tags = labels.map(label => label.description);
+    let tagsArray = labels.map(label => label.description);
+    tags = tagsArray.join(" ");
 
     console.log("Tags: " + tags);
 
@@ -47,14 +49,12 @@ function analyzeImageWithGoogleVision(imageData) {
 }
 
 
-// Helper Function to Upload to S3
-function uploadToS3(imageData) {
-    // Implement the S3 upload here
-    // Note: This can expose your S3 credentials
-}
+
 
 // Helper Function to Upload to S3
 function uploadToS3() {
+
+
     // Replace with your AWS configuration
     AWS.config.update({
         accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
@@ -85,11 +85,41 @@ function uploadToS3() {
         } else {
             console.log('File uploaded successfully:', data);
             alert('File uploaded successfully! You can access it at: ' + data.Location);
+            link = data.Location;
         }
     });
 
 }
 
+// Helper Function to Upload to S3
+function uploadToMongoDB() {
+  console.log("uploading to mongo");
+  const metadata = {
+      tag: tags,
+      link: link,
+      uniqueId: uniqueId
+  };
+
+  fetch('http://localhost:3001/upload-metadata', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(metadata)
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log('Success:', data);
+      // Handle successful metadata upload
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      // Handle errors here
+  });
+}
 
 // Function to process the image
 function processImage(file) {
@@ -101,6 +131,7 @@ function processImage(file) {
         // Call the helper functions
         analyzeImageWithGoogleVision(imageData);
         uploadToS3(imageData);
+        uploadToMongoDB();
 
         // Update UI
         uploadedImage.src = imageData; // Display the uploaded image
