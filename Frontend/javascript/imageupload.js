@@ -2,48 +2,69 @@
 const fileInput = document.getElementById('fileInput');
 const uploadedImage = document.getElementById('uploadedImage');
 
-// Function to upload the image to the backend
-function uploadImageToBackend(file) {
-    // Create a FormData object and append the file
-    const formData = new FormData();
-    formData.append('file', file);
 
-    // Make a POST request to the backend with the file
-    fetch('http://localhost:3001/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        // Handle success - e.g., displaying a success message or updating the UI
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        // Handle errors here, such as displaying an error message
-    });
+// Helper Function to Call Google Vision API
+function analyzeImageWithGoogleVision(imageData) {
+  const apiKey = 'AIzaSyCxpTRpoep0JDpdck5CScU38H7H9XF7Qd8';
+  const apiUrl = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
+
+  const requestBody = {
+      requests: [
+          {
+              image: {
+                  content: imageData.split(',')[1] // Assuming imageData is a base64 string with a header
+              },
+              features: [
+                  { type: 'LABEL_DETECTION', maxResults: 10 }
+              ],
+          },
+      ],
+  };
+
+  fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log('Google Vision API Response:', data);
+      // Process the response data as needed
+  })
+  .catch(error => {
+      console.error('Error calling Google Vision API:', error);
+  });
 }
 
-// Add an event listener to the file input to handle file selection
+
+// Helper Function to Upload to S3
+function uploadToS3(imageData) {
+    // Implement the S3 upload here
+    // Note: This can expose your S3 credentials
+}
+
+
+// Function to process the image
+function processImage(file) {
+    // Convert file to Base64 for the APIs
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const imageData = event.target.result;
+
+        // Call the helper functions
+        analyzeImageWithGoogleVision(imageData);
+        uploadToS3(imageData);
+
+        // Update UI
+        uploadedImage.src = imageData; // Display the uploaded image
+    };
+    reader.readAsDataURL(file);
+}
+
+// Event listener for file input
 fileInput.addEventListener('change', (event) => {
-  event.preventDefault();
     const selectedFile = event.target.files[0];
-    
-
     if (selectedFile) {
-        // Create a FileReader to read the selected file
-        const reader = new FileReader();
-
-        // Add an event listener to the FileReader to handle file reading
-        reader.addEventListener('load', (event) => {
-            const imageUrl = event.target.result;
-            uploadedImage.src = imageUrl; // Display the uploaded image
-        });
-
-        // Read the selected file as a data URL (for images)
-        reader.readAsDataURL(selectedFile);
-
-        // Upload the image to the backend
-        uploadImageToBackend(selectedFile);
+        processImage(selectedFile);
     }
 });
