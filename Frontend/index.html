@@ -90,34 +90,47 @@ Have fun creating your portfolio on this template!!! -->
   <!-- /END Hero Section -->
 
   <!-- About Section -->
-  <section id="about">
+  <!-- <section id="about">
     <div class="container">
       <h2 class="section-title">Upload Clothing Item</h2>
       <div class="row about-wrapper">
         <div class="about-wrapper__image">
-          <img class="img-fluid" src="./assets/profile.png" alt="Profile Image" width="450" height="350" />
+          <img class="img-fluid" src="./assets/profilepic.jpg" alt="Profile Image" width="350" height="350" />
         </div>
         <div class="about-wrapper__info">
           <p class="about-wrapper__info-text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Temporibus quae repellat, ad omnis distinctio velit saepe expedita
-            architecto cumque veritatis adipisci. Sapiente non, saepe hic
-            adipisci doloribus quisquam recusandae et.
-          </p>
-          <p class="about-wrapper__info-text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-            obcaecati doloribus qui praesentium quae veniam esse mollitia
-            consequuntur nisi minima quasi et fugit quidem enim recusandae
-            delectus, iusto culpa rerum?
+            We want OOTD to be your personal stylist. In order to do this, we need to know what you have in your closet.
           </p>
           <span class="about-wrapper__cta">
-            <a href="#" class="cta-btn cta-btn--resume">View Resume</a>
+            <a href="#" class="cta-btn cta-btn--resume">Upload Clothing Article</a>
           </span>
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <!-- /END About Section -->
+
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">Upload Clothing Item</h2>
+      <div class="row about-wrapper">
+        <div class="uploaded-image">
+          <img id="uploadedImage" class="img-fluid" src="#" alt="Uploaded Image" width="350" height="350"/>
+        </div>
+        <div class="about-wrapper__info">
+          <p class="about-wrapper__info-text">
+            We want OOTD to be your personal stylist. In order to do this, we need to know what you have in your closet.
+          </p>
+          <span class="about-wrapper__cta">
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" />
+            <label for="fileInput" class="cta-btn cta-btn--resume">Upload Clothing Article</label>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  
 
   <!--Projects Section-->
   <section id="projects">
@@ -250,6 +263,7 @@ Have fun creating your portfolio on this template!!! -->
     document.getElementById("year").textContent = new Date().getFullYear()
   </script>
   <script src="./javascript/vanilla-tilt.min.js"></script>
+  <script src="./javascript/imageupload.js"></script>
   <script type="text/javascript" src="./javascript/valtilt.js"></script>
 </body>
 
