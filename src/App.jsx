@@ -1,13 +1,13 @@
 import React from 'react';
-// import UploadButton from './components/UploadButton';
+import UploadButton from './components/UploadButton';
 
 function App() {
   return (
     <div className="App">
       <header>
-        <h1>My Clothing Gallery</h1>
+        <h1>My Balls</h1>
       </header>
-      {/* <UploadButton /> */}
+      <UploadButton />
     </div>
   );
 }
