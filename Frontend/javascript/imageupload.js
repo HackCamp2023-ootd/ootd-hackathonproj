@@ -1,6 +1,8 @@
 // Get references to the file input and the image element
 const fileInput = document.getElementById('fileInput');
 const uploadedImage = document.getElementById('uploadedImage');
+let tags = [];
+let link = "";
 
 
 // Helper Function to Call Google Vision API
@@ -28,12 +30,20 @@ function analyzeImageWithGoogleVision(imageData) {
   })
   .then(response => response.json())
   .then(data => {
-      console.log('Google Vision API Response:', data);
+      // console.log('Google Vision API Response:', data);
       // Process the response data as needed
+    let labels = data.responses[0].labelAnnotations;
+    tags = labels.map(label => label.description);
+
+    console.log("Tags: " + tags);
+
   })
   .catch(error => {
       console.error('Error calling Google Vision API:', error);
   });
+
+  
+
 }
 
 
@@ -41,6 +51,12 @@ function analyzeImageWithGoogleVision(imageData) {
 function uploadToS3(imageData) {
     // Implement the S3 upload here
     // Note: This can expose your S3 credentials
+}
+
+// Helper Function to Upload to S3
+function uploadToMongoDB() {
+  // Implement the S3 upload here
+  // Note: This can expose your S3 credentials
 }
 
 
