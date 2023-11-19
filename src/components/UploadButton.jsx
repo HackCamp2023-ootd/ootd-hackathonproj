@@ -1,34 +1,42 @@
-import React from 'react';
-import { processImage } from '../services/processImageAPI';
+import React, { useState } from 'react';
 
 const UploadButton = () => {
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      return;
-    }
+  const [selectedImage, setSelectedImage] = useState(null);
 
-    // Call the function from processImageAPI.js to process the image
-    try {
-      const response = await processImage(file);
-      console.log(response); // Handle the response as needed
-    } catch (error) {
-      console.error('Error processing image:', error);
-    }
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        setSelectedImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }  
   };
+
+  
 
   return (
     <div>
-      <input 
-        type="file" 
-        accept="image/*" 
-        onChange={handleImageUpload} 
-        style={{ display: 'none' }} 
-        id="hidden-file-input"
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        id="upload-button"
       />
-      <label htmlFor="hidden-file-input" style={{ cursor: 'pointer' }}>
-        <button>Upload Image</button>
-      </label>
+      {selectedImage && (
+        <div>
+          <p>Preview:</p>
+          <img
+            src={selectedImage}
+            alt="Selected"
+            style={{ maxWidth: '300px', maxHeight: '300px' }}
+          />
+        </div>
+      )}      
     </div>
   );
 };
