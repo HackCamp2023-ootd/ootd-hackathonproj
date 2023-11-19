@@ -45,6 +45,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     }
 });
 
+app.post('/startPipeline', (req, res) => {
+    makeApiCall();
+    res.send('API call initiated');
+  });
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
