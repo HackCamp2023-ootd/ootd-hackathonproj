@@ -54,9 +54,40 @@ function uploadToS3(imageData) {
 }
 
 // Helper Function to Upload to S3
-function uploadToMongoDB() {
-  // Implement the S3 upload here
-  // Note: This can expose your S3 credentials
+function uploadToS3() {
+    // Replace with your AWS configuration
+    AWS.config.update({
+        accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
+        secretAccessKey: 'cxwtKJyfK+rfBJkYTAXb7KN9WqjSPCJxtinhI7c/',
+        region: 'us-east-1'
+    });
+
+    const fileS3 = fileInput.files[0];
+
+    if (!fileS3) {
+        alert('Please select a file to upload.');
+        return;
+    }
+
+    const s3 = new AWS.S3();
+    const bucketName = 'smart-closet-ootd-hackcamp';
+    const key = `uploads/${Date.now()}_${fileS3.name}`;
+
+    s3.upload({
+        Bucket: bucketName,
+        Key: key,
+        Body: fileS3,
+        ACL: 'public-read' // Make the uploaded file public
+    }, (err, data) => {
+        if (err) {
+            console.error('Error uploading file:', err);
+            alert('Error uploading file. Please try again later.');
+        } else {
+            console.log('File uploaded successfully:', data);
+            alert('File uploaded successfully! You can access it at: ' + data.Location);
+        }
+    });
+
 }
 
 
