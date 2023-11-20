@@ -75,7 +75,7 @@ Have fun creating your portfolio on this template!!! -->
 <body>
   <!-- Hero Section -->
   <div id="hero">
-    <section class="container">
+    <section class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
       <h1 class="hero-title">
         Hi, I'm <span class="text-color-main name">OOTD</span>
         <br />
@@ -83,13 +83,17 @@ Have fun creating your portfolio on this template!!! -->
           morning!</small>
       </h1>
       <p class="hero-cta">
-        <a class="cta-btn cta-btn--hero" href="#projects">Start Generating Hapiness today!</a>
+        <a class="cta-btn cta-btn--hero" href="#projects">Generate Outfit</a>
+        <!-- Second button with added margin -->
+        <a class="cta-btn cta-btn--hero" href="#contact" style="margin-left: 60px;">Get Outfit Inspiration!</a>
       </p>
     </section>
     <a href="#about" class="scroll-down-link" aria-label="scroll-down">
       <div class="scroll-down"></div>
     </a>
   </div>
+  
+  
   <!-- /END Hero Section -->
 
   <!-- About Section -->
@@ -98,7 +102,7 @@ Have fun creating your portfolio on this template!!! -->
       <h2 class="section-title">Upload Clothing Item</h2>
       <div class="row about-wrapper">
         <div class="uploaded-image">
-          <img id="uploadedImage" class="img-fluid" src="#" alt="Uploaded Image" width="350" height="350"/>
+          <img id="uploadedImage" class="img-fluid" src="./output-onlinegiftools.gif" alt=" " width="200" height="200"/>
         </div>
         <div class="about-wrapper__info">
           <p class="about-wrapper__info-text">
@@ -109,10 +113,10 @@ Have fun creating your portfolio on this template!!! -->
             <label for="fileInput" class="cta-btn cta-btn--resume">Upload Clothing Article</label>
           </span>
           <select id="itemCategory" class="item-category-select">
-            <option value="Layer">Layer</option>
-            <option value="Top">Top</option>
-            <option value="Bottom">Bottom</option>
-        </select>
+            <option value="Layer" style="text-align: center;">Layer</option>
+            <option value="Top" style="text-align: center;">Top</option>
+            <option value="Bottom" style="text-align: center;">Bottom</option>
+          </select>
         </div>
         
       </div>
