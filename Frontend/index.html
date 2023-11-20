@@ -108,7 +108,13 @@ Have fun creating your portfolio on this template!!! -->
             <input type="file" id="fileInput" accept="image/*" style="display: none;" />
             <label for="fileInput" class="cta-btn cta-btn--resume">Upload Clothing Article</label>
           </span>
+          <select id="itemCategory" class="item-category-select">
+            <option value="Layer">Layer</option>
+            <option value="Top">Top</option>
+            <option value="Bottom">Bottom</option>
+        </select>
         </div>
+        
       </div>
 
     </div>
@@ -124,7 +130,16 @@ Have fun creating your portfolio on this template!!! -->
 
         
 
+        
+
         <!-- Each .row is a project -->
+        <div>
+
+          <div class="all_button">
+            <button id="randomizeAllButton" class="cta-btn cta-btn--hero cta-btn--projects">Randomize EVERYTHING</button>
+            <script src="./javascript/randomizeall.js"></script>
+          </div>
+
         <article class="row">
           <div class="project-wrapper__text">
             <h3 class="project-wrapper__text-title">Layer</h3>
@@ -132,20 +147,23 @@ Have fun creating your portfolio on this template!!! -->
               For extra style, wear this layer on top of your top!
             </p>
             <div class="project-wrapper__text-btns">
-              <a href="#" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--hero cta-btn--projects">See
-                Live</a>
-              <a href="#" target="_blank" class="cta-btn text-color-main">Source Code</a>
+              <button id="randomizeButton1" class="cta-btn cta-btn--hero cta-btn--projects">Randomize This</button>
             </div>
           </div>
 
           <div class="project-wrapper__image">
             <a href="#" target="_blank" rel="noopener noreferrer">
               <div class="thumbnail rounded">
-                <img src="./assets/project.png" class="img-fluid" alt="Project Image" width="1366" height="767" />
+                <div id="garmentDisplay1">
+                  <img id="garmentImage1" src="" alt="Random Garment" style="display: none;" />
+              </div>
+              <script src="./javascript/randomize.js"></script>
+              
               </div>
             </a>
           </div>
         </article>
+      </div>
         <!-- /END Project -->
 
         <!-- Each .row is a project -->
@@ -156,16 +174,17 @@ Have fun creating your portfolio on this template!!! -->
               Your top for today!
             </p>
             <div class="project-wrapper__text-btns">
-              <a href="#" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--hero cta-btn--projects">See
-                Live</a>
-              <a href="#" target="_blank" class="cta-btn text-color-main">Source Code</a>
+              <button id="randomizeButton2" class="cta-btn cta-btn--hero cta-btn--projects">Randomize This</button>
             </div>
           </div>
+          <script src="./javascript/randomize.js"></script>
 
           <div class="project-wrapper__image">
             <a href="#" target="_blank" rel="noopener noreferrer">
               <div class="thumbnail rounded">
-                <img src="./assets/project.png" class="img-fluid" alt="Project Image" width="1366" height="767" />
+                <div id="garmentDisplay2">
+                  <img id="garmentImage2" src="" alt="Random Garment" style="display: none;" />
+              </div>
               </div>
             </a>
           </div>
@@ -180,16 +199,16 @@ Have fun creating your portfolio on this template!!! -->
               Your bottoms for the day!
             </p>
             <div class="project-wrapper__text-btns">
-              <a href="#" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--hero cta-btn--projects">See
-                Live</a>
-              <a href="#" target="_blank" class="cta-btn text-color-main">Source Code</a>
+              <button id="randomizeButton3" class="cta-btn cta-btn--hero cta-btn--projects">Randomize This</button>
             </div>
           </div>
 
           <div class="project-wrapper__image">
             <a href="#" target="_blank" rel="noopener noreferrer">
               <div class="thumbnail rounded">
-                <img src="./assets/project.png" class="img-fluid" alt="Project Image" width="1366" height="767" />
+                <div id="garmentDisplay3">
+                  <img id="garmentImage3" src="" alt="Random Garment" style="display: none;" />
+              </div>
               </div>
             </a>
           </div>

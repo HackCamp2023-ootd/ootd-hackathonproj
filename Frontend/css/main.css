@@ -768,4 +768,25 @@ section .row span {
         margin-bottom: 3.2rem;
         transform: none
     }
+
 }
+
+#randomizeAllButton {
+    margin-bottom: 70px; 
+}
+
+#itemCategory {
+    width: 160px; /* Set the width as needed */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+
+
+/* Style to apply when dark mode is toggled */
+.dark-light:checked ~ .sec-center #itemCategory {
+    background-color: #102770;
+    color: #ffeba7;
+    box-shadow: 0 12px 35px 0 rgba(16,39,112,.25);
+}
+
