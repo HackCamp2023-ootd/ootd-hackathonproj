@@ -2,6 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const randomizeButton1 = document.getElementById('randomizeButton1');
     randomizeButton1.addEventListener('click', () => randomizeGarment('Layer'));
 
+    const randomizeAllButton = document.getElementById('randomizeAllButton');
+
+    randomizeAllButton.addEventListener('click', () => {
+        randomizeGarment('Layer');
+        randomizeGarment('Top');
+        randomizeGarment('Bottom');
+    });
+
     const randomizeButton2 = document.getElementById('randomizeButton2');
     randomizeButton2.addEventListener('click', () => randomizeGarment('Top'));
 
