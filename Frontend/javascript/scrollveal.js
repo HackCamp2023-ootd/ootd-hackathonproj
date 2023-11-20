@@ -49,6 +49,12 @@ ScrollReveal().reveal(".about-wrapper__info", {
 });
 
 /* Projects Section */
+ScrollReveal().reveal("all_button", {
+  ...defaultProps,
+  delay: 600,
+  origin: window.innerWidth > 768 ? "left" : "bottom",
+});
+
 ScrollReveal().reveal(".project-wrapper__text", {
   ...defaultProps,
   delay: 600,
