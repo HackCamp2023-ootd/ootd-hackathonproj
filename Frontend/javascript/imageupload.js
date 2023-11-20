@@ -6,7 +6,9 @@ const itemCategorySelect = document.getElementById('itemCategory'); // Access th
 let tags = [];
 let tagString = "";
 let link = "";
+let selectedItemCategory = "";
 let imageJSONobj = {};
+let commaSeparatedStringArray = [];
 
 
 // Helper Function to Call Google Vision API
@@ -40,7 +42,7 @@ function analyzeImageWithGoogleVision(imageData) {
             let tagsArray = labels.map(label => label.description);
             tags = tagsArray.join(" ");
 
-            console.log("Tags: " + tags);
+            // console.log("Tags: " + tags);
 
         })
         .catch(error => {
@@ -81,10 +83,10 @@ function uploadToS3() {
             console.error('Error uploading file:', err);
             alert('Error uploading file. Please try again later.');
         } else {
-            console.log('File uploaded to S3 successfully:', data);
+            // console.log('File uploaded to S3 successfully:', data);
             // alert('File uploaded successfully! You can access it at: ' + data.Location);
-            tagString = data.Location + ",Top," + tags; // This adds the link to the string
-            console.log("Here is the tag string : " + tagString);
+            tagString = data.Location + "," + itemCategorySelect.value + "," + tags; // This adds the link to the string
+            // console.log("Here is the tag string : " + tagString);
             insertIntoDynamoDB(tagString);
         }
     });
@@ -129,7 +131,7 @@ function insertIntoDynamoDB(tagParam) {
         }
     });
 
-    getItemsFromDynamoDB();
+    console.log(getItemsFromDynamoDB());
 
 };
 
@@ -156,7 +158,7 @@ async function getItemsFromDynamoDB() {
             });
 
             const commaSeparatedString = itemsArray.join('\n');
-            console.log(commaSeparatedString);
+            return itemsArray;
 
         } else {
             console.log('No items found in DynamoDB.');
@@ -203,6 +205,7 @@ fileInput.addEventListener('change', (event) => {
         // You can use the selectedItemCategory value here to include it in the metadata upload
         itemCategory = selectedItemCategory;
         console.log('Selected Category:', selectedItemCategory);
+
 
         // For example, if you're using a function to upload metadata:
         // uploadMetadata(selectedFile, selectedItemCategory);
