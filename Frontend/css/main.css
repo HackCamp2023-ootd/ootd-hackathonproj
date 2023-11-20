@@ -40,6 +40,17 @@ a:hover {
     text-transform: uppercase
 }
 
+#imageContainer {
+    max-width: 90%; /* Adjust the width as needed to fit the viewport */
+    max-height: 80vh; /* Max height relative to the viewport height */
+    display: block; /* Display block to apply width and height properly */
+    margin: 0 auto; /* Center the image */
+    border-radius: 10px; /* Rounded borders */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Drop shadow */
+    object-fit: contain; /* Ensures the image keeps its aspect ratio */
+    margin-top: 30px;
+}
+
 #loadingMessage {
     display: none; /* Initially hidden */
     text-align: center;
