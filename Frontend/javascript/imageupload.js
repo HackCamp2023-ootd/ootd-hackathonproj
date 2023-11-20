@@ -1,9 +1,12 @@
 // Get references to the file input and the image element
 const fileInput = document.getElementById('fileInput');
 const uploadedImage = document.getElementById('uploadedImage');
+const itemCategorySelect = document.getElementById('itemCategory'); // Access the dropdown
+
 let tags = "";
 let link = "";
 let uniqueId = "ID " + Date.now();
+let itemCategory = "";
 
 
 // Helper Function to Call Google Vision API
@@ -49,78 +52,6 @@ function analyzeImageWithGoogleVision(imageData) {
 }
 
 
-
-
-// Helper Function to Upload to S3
-function uploadToS3() {
-
-
-    // Replace with your AWS configuration
-    AWS.config.update({
-        accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
-        secretAccessKey: 'cxwtKJyfK+rfBJkYTAXb7KN9WqjSPCJxtinhI7c/',
-        region: 'us-east-1'
-    });
-
-    const fileS3 = fileInput.files[0];
-
-    if (!fileS3) {
-        alert('Please select a file to upload.');
-        return;
-    }
-
-    const s3 = new AWS.S3();
-    const bucketName = 'smart-closet-ootd-hackcamp';
-    const key = `uploads/${Date.now()}_${fileS3.name}`;
-
-    s3.upload({
-        Bucket: bucketName,
-        Key: key,
-        Body: fileS3,
-        ACL: 'public-read' // Make the uploaded file public
-    }, (err, data) => {
-        if (err) {
-            console.error('Error uploading file:', err);
-            alert('Error uploading file. Please try again later.');
-        } else {
-            console.log('File uploaded successfully:', data);
-            alert('File uploaded successfully! You can access it at: ' + data.Location);
-            link = data.Location;
-        }
-    });
-
-}
-
-// Helper Function to Upload to S3
-function uploadToMongoDB() {
-  console.log("uploading to mongo");
-  const metadata = {
-      tag: tags,
-      link: link,
-      uniqueId: uniqueId
-  };
-
-  fetch('http://localhost:3001/upload-metadata', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(metadata)
-  })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
-      return response.json();
-  })
-  .then(data => {
-      console.log('Success:', data);
-      // Handle successful metadata upload
-  })
-  .catch(error => {
-      console.error('Error:', error);
-      // Handle errors here
-  });
-}
-
 // Function to process the image
 function processImage(file) {
     // Convert file to Base64 for the APIs
@@ -130,8 +61,6 @@ function processImage(file) {
 
         // Call the helper functions
         analyzeImageWithGoogleVision(imageData);
-        uploadToS3(imageData);
-        uploadToMongoDB();
 
         // Update UI
         uploadedImage.src = imageData; // Display the uploaded image
@@ -145,4 +74,20 @@ fileInput.addEventListener('change', (event) => {
     if (selectedFile) {
         processImage(selectedFile);
     }
+});
+
+fileInput.addEventListener('change', (event) => {
+  const selectedFile = event.target.files[0];
+  const selectedItemCategory = itemCategorySelect.value; // Get the selected category
+
+  if (selectedFile) {
+      // Process the selected file
+
+      // You can use the selectedItemCategory value here to include it in the metadata upload
+      itemCategory = selectedItemCategory;
+      console.log('Selected Category:', selectedItemCategory);
+
+      // For example, if you're using a function to upload metadata:
+      // uploadMetadata(selectedFile, selectedItemCategory);
+  }
 });
