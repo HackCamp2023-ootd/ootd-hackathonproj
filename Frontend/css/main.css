@@ -768,6 +768,7 @@ section .row span {
         margin-bottom: 3.2rem;
         transform: none
     }
+
 }
 
 #randomizeAllButton {
@@ -788,3 +789,4 @@ section .row span {
     color: #ffeba7;
     box-shadow: 0 12px 35px 0 rgba(16,39,112,.25);
 }
+
