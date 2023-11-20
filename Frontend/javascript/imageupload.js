@@ -3,10 +3,10 @@ const fileInput = document.getElementById('fileInput');
 const uploadedImage = document.getElementById('uploadedImage');
 const itemCategorySelect = document.getElementById('itemCategory'); // Access the dropdown
 
-let tags = "";
+let tags = [];
+let tagString = "";
 let link = "";
-let uniqueId = "ID " + Date.now();
-let itemCategory = "";
+let imageJSONobj = {};
 
 
 // Helper Function to Call Google Vision API
@@ -51,6 +51,88 @@ function analyzeImageWithGoogleVision(imageData) {
 
 }
 
+function uploadToS3() {
+  // Replace with your AWS configuration
+  AWS.config.update({
+      accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
+      secretAccessKey: 'cxwtKJyfK+rfBJkYTAXb7KN9WqjSPCJxtinhI7c/',
+      region: 'us-east-1'
+  });
+
+
+  const fileS3 = fileInput.files[0];
+
+  if (!fileS3) {
+      alert('Please select a file to upload.');
+      return;
+  }
+
+  const s3 = new AWS.S3();
+  const bucketName = 'smart-closet-ootd-hackcamp';
+  const key = `uploads/${Date.now()}_${fileS3.name}`;
+
+  s3.upload({
+      Bucket: bucketName,
+      Key: key,
+      Body: fileS3,
+      ACL: 'public-read' // Make the uploaded file public
+  }, (err, data) => {
+      if (err) {
+          console.error('Error uploading file:', err);
+          alert('Error uploading file. Please try again later.');
+      } else {
+          console.log('File uploaded to S3 successfully:', data);
+          // alert('File uploaded successfully! You can access it at: ' + data.Location);
+          tagString = data.Location + ",Top," + tags; // This adds the link to the string
+          console.log("Here is the tag string : " + tagString);
+          insertIntoDynamoDB(tagString);
+      }
+  });
+
+}
+
+function insertIntoDynamoDB(tagParam) {
+  console.log(tagParam);
+  AWS.config.update({
+      accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
+      secretAccessKey: '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',
+      region: 'us-east-1'
+  });
+
+  const docClient = new AWS.DynamoDB.DocumentClient();
+
+  // Splitting the tagParam string by commas
+  const tagValues = tagParam.split(',');
+  if (tagValues.length < 2) {
+      console.error("Invalid tagParam format. Expected at least two values separated by a comma.");
+      return;
+  }
+
+  // Constructing the item object for DynamoDB
+  const item = {
+      link: tagValues[0].trim(), // First value as 'link'
+      type: tagValues[1].trim(), // Second value as 'type'
+      attributes: tagValues.slice(2).map(value => value.trim()).join(',') // Third value as 'attributes' as a comma-separated string
+  };
+  console.log("Item: " + item.link + " " + item.type + " " + item.attributes);
+
+  var params = {
+      TableName: "smart_closet_ootd",
+      Item: item
+  };
+
+  docClient.put(params, function(err, data) {
+      if (err) {
+          console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+          console.log("Added item:", JSON.stringify(data, null, 2));
+      }
+  });
+
+  // getItemsFromDynamoDB("Top");
+
+};
+
 
 // Function to process the image
 function processImage(file) {
@@ -61,6 +143,7 @@ function processImage(file) {
 
         // Call the helper functions
         analyzeImageWithGoogleVision(imageData);
+        uploadToS3(imageData);
 
         // Update UI
         uploadedImage.src = imageData; // Display the uploaded image
