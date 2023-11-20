@@ -12,8 +12,46 @@ document.addEventListener('DOMContentLoaded', () => {
 const garments = [{link:"link1", cat:"layer", desc:"desc1"}, {link:"link2", cat:"top", desc:"desc3"}, {link:"link3", cat:"layer", desc:"desc2"}, {link: "link4", cat: "bottom", desc:"desc5"}];
 const garments2 = [];
 
+async function getItemsFromDynamoDB() {
+
+    AWS.config.update({
+        accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
+        secretAccessKey: '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',
+        region: 'us-east-1'
+    });
+
+    const docClient = new AWS.DynamoDB.DocumentClient();
+
+    try {
+        const params = {
+            TableName: 'smart_closet_ootd'
+        };
+
+        const result = await docClient.scan(params).promise();
+        console.log('Result from DynamoDB:', result);
+
+        if (result.Items && result.Items.length > 0) {
+            const itemsArray = result.Items.map(item => {
+                return `${item.link}, ${item.type}, ${item.attributes}`;
+            });
+
+            const commaSeparatedString = itemsArray.join('\n');
+            return itemsArray;
+
+        } else {
+            console.log('No items found in DynamoDB.');
+        }
+    } catch (error) {
+        console.error('Error retrieving items from DynamoDB:', error);
+        throw error;
+    }
+}
+
 function randomizeGarment1() {
     console.log("rand1");
+    dynamoDBitems = getItemsFromDynamoDB();
+    
+
     // fetch('http://localhost:3001/api/garments') // Replace with your actual API endpoint
     //     .then(response => response.json())
     //     .then(garments => {

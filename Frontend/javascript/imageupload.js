@@ -131,43 +131,44 @@ function insertIntoDynamoDB(tagParam) {
         }
     });
 
-    console.log(getItemsFromDynamoDB());
+    // console.log(getItemsFromDynamoDB());
 
 };
 
-async function getItemsFromDynamoDB() {
+// async function getItemsFromDynamoDB() {
 
-    AWS.config.update({
-        accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
-        secretAccessKey: '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',
-        region: 'us-east-1'
-    });
+//     AWS.config.update({
+//         accessKeyId: 'AKIASJDXDX2NSGH2VKB7',
+//         secretAccessKey: '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',
+//         region: 'us-east-1'
+//     });
 
-    const docClient = new AWS.DynamoDB.DocumentClient();
+//     const docClient = new AWS.DynamoDB.DocumentClient();
 
-    try {
-        const params = {
-            TableName: 'smart_closet_ootd'
-        };
+//     try {
+//         const params = {
+//             TableName: 'smart_closet_ootd'
+//         };
 
-        const result = await docClient.scan(params).promise();
+//         const result = await docClient.scan(params).promise();
+//         console.log('Result from DynamoDB:', result);
 
-        if (result.Items && result.Items.length > 0) {
-            const itemsArray = result.Items.map(item => {
-                return `${item.link}, ${item.type}, ${item.attributes}`;
-            });
+//         if (result.Items && result.Items.length > 0) {
+//             const itemsArray = result.Items.map(item => {
+//                 return `${item.link}, ${item.type}, ${item.attributes}`;
+//             });
 
-            const commaSeparatedString = itemsArray.join('\n');
-            return itemsArray;
+//             const commaSeparatedString = itemsArray.join('\n');
+//             return itemsArray;
 
-        } else {
-            console.log('No items found in DynamoDB.');
-        }
-    } catch (error) {
-        console.error('Error retrieving items from DynamoDB:', error);
-        throw error;
-    }
-}
+//         } else {
+//             console.log('No items found in DynamoDB.');
+//         }
+//     } catch (error) {
+//         console.error('Error retrieving items from DynamoDB:', error);
+//         throw error;
+//     }
+// }
 
 
 // Function to process the image
